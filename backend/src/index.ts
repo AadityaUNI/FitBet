@@ -54,28 +54,28 @@ const bootstrap = async () => {
 	// 	console.log(Account.findOne({ _id: "64a7f0c4c8f1b2b1a5e4d3c2" }));
 	// });
 		
-  app.get('/steps', withGoogleAuth, async (req, res, next) => {
-    try {
-      const fitness = google.fitness({ version: 'v1', auth: req.oAuth2Client });
+//   app.get('/steps', withGoogleAuth, async (req, res, next) => {
+//     try {
+//       const fitness = google.fitness({ version: 'v1', auth: req.oAuth2Client });
 
-      const result = await fitness.users.dataset.aggregate({
-        userId: 'me',
-        requestBody: {
-          aggregateBy: [{
-            dataTypeName: 'com.google.step_count.delta',
-            dataSourceId: 'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps',
-          }],
-          bucketByTime: { durationMillis: 24 * 60 * 60 * 1000 },
-          startTimeMillis: Date.now() - 20 * 24 * 60 * 60 * 1000,
-          endTimeMillis: Date.now(),
-        },
-      });
+//       const result = await fitness.users.dataset.aggregate({
+//         userId: 'me',
+//         requestBody: {
+//           aggregateBy: [{
+//             dataTypeName: 'com.google.step_count.delta',
+//             dataSourceId: 'derived:com.google.step_count.delta:com.google.android.gms:estimated_steps',
+//           }],
+//           bucketByTime: { durationMillis: 24 * 60 * 60 * 1000 },
+//           startTimeMillis: Date.now() - 20 * 24 * 60 * 60 * 1000,
+//           endTimeMillis: Date.now(),
+//         },
+//       });
 
-      res.json(result.data);
-    } catch (err) {
-      next(err);
-    }
-  });
+//       res.json(result.data);
+//     } catch (err) {
+//       next(err);
+//     }
+//   });
 
   app.listen(PORT, () => console.log(`✅ Server running on ${PORT}`));
 };

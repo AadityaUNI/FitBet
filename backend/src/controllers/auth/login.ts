@@ -6,6 +6,7 @@ import Account from '../../models/Account'
 
 const login: RequestHandler = async (req, res, next) => {
   try {
+    console.log(req.body)
     const validationError = await joi.validate(
       {
         username: joi.instance.string().required(),
@@ -26,7 +27,7 @@ const login: RequestHandler = async (req, res, next) => {
     if (!account) {
       return next({
         statusCode: 400,
-        message: 'Bad credentials',
+        message: 'Bad credentials username error',
       })
     }
 
@@ -36,7 +37,7 @@ const login: RequestHandler = async (req, res, next) => {
     if (!passOk) {
       return next({
         statusCode: 400,
-        message: 'Bad credentials',
+        message: 'Bad credentials password error',
       })
     }
 
