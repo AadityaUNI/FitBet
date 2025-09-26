@@ -1,7 +1,12 @@
 import { type Document, model, Schema } from 'mongoose'
 import { type Account } from '../@types'
 
-interface I extends Document, Account {}
+interface I extends Document, Account {
+	googleAccessToken?: string | null;
+	googleRefreshToken?: string | null;
+  	googleTokenExpiry?: Date | null;
+}
+
 
 const instance = new Schema<I>(
   {
@@ -19,7 +24,25 @@ const instance = new Schema<I>(
     password: {
       type: String,
       required: true,
-    },
+		},
+	
+	googleAccessToken: {
+		type: String,
+		required: false,
+		default: null
+		},
+	
+	googleRefreshToken: {
+		type: String,
+		required: false,
+		default: null
+		},
+	googleTokenExpiry: {
+		type: Date,
+		required: false,
+		default: null
+		},
+	
     role: {
       type: String,
       required: true,
