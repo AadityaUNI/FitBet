@@ -51,14 +51,14 @@ or [Community](<https://github.com/benelferink/mern-template/wiki/Install-MongoD
 
 ### 4. Start applications:
 
-Go to the `server` folder, and run `dev`.
+Go to the `frontend` folder, and run `dev`.
 
 ```
 cd ./server
 npm run dev
 ```
 
-Go to the `client` folder, and run `dev`.
+Go to the `backend` folder, and run `dev`.
 
 ```
 cd ./client
