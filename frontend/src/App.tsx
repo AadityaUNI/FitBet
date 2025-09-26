@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import GetStarted from './pages/GetStarted'
 import BettingForm from './pages/BetForm'
 import Login from './pages/Login'
+import LandingPage from './pages/landingPage'
 function App() {
 
   return (
@@ -15,7 +16,7 @@ function App() {
     <Router>
       
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/getstarted" element={<GetStarted />} />

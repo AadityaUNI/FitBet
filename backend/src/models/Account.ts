@@ -5,6 +5,8 @@ interface I extends Document, Account {
 	googleAccessToken?: string | null;
 	googleRefreshToken?: string | null;
   	googleTokenExpiry?: Date | null;
+    followersCount?: number | 0;
+    followingCount?: number | 0;
 }
 
 
@@ -49,6 +51,8 @@ const instance = new Schema<I>(
       enum: ['user', 'admin'],
       default: 'user',
     },
+    followersCount: { type: Number, default: 0 },
+    followingCount: { type: Number, default: 0 },
   },
   {
     timestamps: true,

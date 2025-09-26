@@ -112,7 +112,7 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Send Bet Request</Button>
+        <Button type="submit" className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:opacity-90" >Send Bet Request</Button>
       </form>
     </Form>
   );

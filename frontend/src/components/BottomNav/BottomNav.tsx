@@ -8,6 +8,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AddIcon from '@mui/icons-material/Add'
 import HomeIcon from '@mui/icons-material/Home'
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { ProfilePopover } from '@/pages/ProfilePopover';
 
@@ -31,8 +32,9 @@ export default function SimpleBottomNavigation() {
             setValue(newValue);
           }}
         >
-          <BottomNavigationAction label="Home" icon={<HomeIcon />} component={Link} to="/" />
+          <BottomNavigationAction label="Home" icon={<HomeIcon />} component={Link} to="/Home" />
           <BottomNavigationAction label="Add Bet" icon={<AddIcon />} component={Link} to="/betform" />
+          <BottomNavigationAction label="Add Bet" icon={<PersonAddAltIcon />} component={Link} to="/" />
           
         </BottomNavigation>
       </Box>

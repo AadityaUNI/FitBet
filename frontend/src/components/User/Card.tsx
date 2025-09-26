@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import React, { useState } from "react"
 import {
   Card,
@@ -13,10 +12,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-const API_BASE = import.meta?.env?.VITE_API_BASE ?? "http://localhost:8080"
+  const API_BASE = import.meta?.env?.VITE_API_BASE ?? "http://localhost:8080"
 
-
-  
 
 export function Login({ onSwitch }: { onSwitch: () => void }) {
   const [email, setEmail] = useState(
@@ -51,7 +48,7 @@ export function Login({ onSwitch }: { onSwitch: () => void }) {
         localStorage.removeItem("last_username")
       }
 
-      window.location.href = "/"
+      window.location.href = "/Home"
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -72,11 +69,11 @@ export function Login({ onSwitch }: { onSwitch: () => void }) {
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Username</Label>
               <Input
                 id="email"
                 type="text"
-                placeholder="m@example.com"
+                placeholder="yourusername"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -87,9 +84,6 @@ export function Login({ onSwitch }: { onSwitch: () => void }) {
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
-                <a href="#" className="ml-auto text-sm underline-offset-4 hover:underline">
-                  Forgot your password?
-                </a>
               </div>
               <Input
                 id="password"
@@ -115,7 +109,10 @@ export function Login({ onSwitch }: { onSwitch: () => void }) {
           </div>
 
           <CardFooter className="mt-6 flex-col gap-2 px-0">
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button 
+            type="submit" 
+            className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:opacity-90"
+            disabled={loading}>
               {loading ? "Logging in…" : "Login"}
             </Button>
           </CardFooter>
@@ -137,7 +134,7 @@ export function Register({ onSwitch }: { onSwitch: () => void }) {
     setError(null)
     setLoading(true)
     try {
-      const res = await fetch(`${API_BASE}/register`, {
+      const res = await fetch(`${API_BASE}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -148,7 +145,7 @@ export function Register({ onSwitch }: { onSwitch: () => void }) {
       localStorage.setItem("auth_token", payload.token)
       localStorage.setItem("auth_user", JSON.stringify(payload.data))
 
-      window.location.href = "/" // go to dashboard/home
+      // window.location.href = "/" // go to dashboard/home
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -216,7 +213,9 @@ export function Register({ onSwitch }: { onSwitch: () => void }) {
           </div>
 
           <CardFooter className="mt-6 flex-col gap-2 px-0">
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" 
+            className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:opacity-90" 
+            disabled={loading}>
               {loading ? "Logging in…" : "Sign Up"}
             </Button>
           </CardFooter>
