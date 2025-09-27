@@ -1,11 +1,24 @@
 import SimpleBottomNavigation from "../components/BottomNav/BottomNav";
-import { ProfilePopover } from "./ProfilePopover";
+import { ProfilePopover } from "../components/ProfilePopover";
 
 
 import { Coins, Flame, Clock, BicepsFlexed } from "lucide-react"
 import { StatCard } from "@/components/HomePage/statCards"
 
+import { useEffect, useState } from "react"
+import { BetCard } from "@/components/HomePage/betCard"
+
+type Bet = Parameters<typeof BetCard>[0]["bet"]
+
 const Home = () => {
+  const [, setBet] = useState<Bet | null>(null)
+
+  useEffect(() => {
+    fetch("/bets.json")
+      .then(r => r.json())
+      .then((data: Bet[]) => setBet(data[0])) // pick first bet or filter here
+      .catch(e => console.error("Error loading bet:", e))
+  }, [])
   return (
     <>
 
@@ -50,12 +63,32 @@ const Home = () => {
             <StatCard icon={Clock}   value="105m" label="This Week"      variant="violet" />
           </div>
         </div>
-        <p className="text-lg text-gray-600 mb-2 pt-8">Level 7 Achieved!</p>
-        <p className="text-lg text-gray-600 mb-2">12 Day Streak</p>
+        {/* <p className="text-lg text-gray-600 mb-2 pt-8">Level 7 Achieved!</p>
+        <p className="text-lg text-gray-600 mb-2">12 Day Streak</p> */}
 
+        <div className="mt-6 max-w-lg mx-auto">
+          <h2 className="text-xl font-semibold mb-3 z-[-10]">Your Active Bets</h2>
+          <BetCard
+            bet={{
+                id: "Bet",
+                title: "Hit 10,000 steps daily for 7 days",
+                goal: "Fetching bet data",
+                stake: 100,
+                currency: "Tokens",
+                participants: ["user1", "user2"].map((id) => ({ userId: id, status: "joined" })),
+                pot: 100,
+                status: "open",
+                startAt: new Date().toISOString(),
+                endAt: new Date(Date.now() + 86400000).toISOString(), // tomorrow
+              }
+            }
+          />
+        </div>
           {/* HomePage with user info, stats */}
         </div>
-      </div>
+        </div>
+        
+
       <SimpleBottomNavigation />
     </>
   );

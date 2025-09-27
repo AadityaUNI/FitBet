@@ -1,6 +1,6 @@
 import SimpleBottomNavigation from "../components/BottomNav/BottomNav";
 import { ProfileForm } from "../components/Bets/CreateBet";
-import { ProfilePopover } from "./ProfilePopover";
+import { ProfilePopover } from "../components/ProfilePopover";
 const BettingForm = () => {
   return (
     <>
