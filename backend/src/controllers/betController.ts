@@ -10,7 +10,6 @@ export class BetController {
       const bets = await BetModel.find({ 
         users: userId 
       }).sort({ createdAt: -1 })
-        .populate('users', 'username email')
         .populate('winner', 'username email');
       
       return bets;
@@ -27,8 +26,7 @@ export class BetController {
         status: 'active',
         startDate: { $lte: new Date() },
         endDate: { $gte: new Date() }
-      }).sort({ createdAt: -1 })
-        .populate('users', 'username email');
+      }).sort({ createdAt: -1 });
       
       return bets;
     } catch (error) {
@@ -39,17 +37,23 @@ export class BetController {
   // Create a new bet
   static async createBet(betData: any) {
     try {
-      // Validate that users exist
-      const users = await Account.find({ _id: { $in: betData.users } });
-      if (users.length !== betData.users.length) {
-        throw new Error('One or more users do not exist');
+      // Handle solo bet (empty or blank users field)
+      if (!betData.users || betData.users.trim() === '') {
+        // Solo bet - set users to empty string or null
+        betData.users = '';
+      } else {
+        // Bet with another user - validate username exists
+        const user = await Account.findOne({ username: betData.users.trim() });
+        if (!user) {
+          throw new Error(`User '${betData.users}' does not exist`);
+        }
+        // Keep the username as string
+        betData.users = betData.users.trim();
       }
 
       const bet = await BetModel.create(betData);
-      const populatedBet = await BetModel.findById(bet._id)
-        .populate('users', 'username email');
-      
-      return populatedBet;
+      // No need to populate since users is now a string
+      return bet;
     } catch (error) {
       throw error;
     }
@@ -79,7 +83,7 @@ export class BetController {
           winner: winnerId 
         },
         { new: true }
-      ).populate('users', 'username email').populate('winner', 'username email');
+      ).populate('winner', 'username email');
 
       return updatedBet;
     } catch (error) {

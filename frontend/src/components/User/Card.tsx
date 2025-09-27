@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-  const API_BASE = import.meta?.env?.VITE_API_BASE ?? "http://localhost:8080"
+  const API_BASE = "http:://localhost:8080"
 
 
 export function Login({ onSwitch }: { onSwitch: () => void }) {

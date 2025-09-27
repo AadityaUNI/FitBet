@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { json, z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,11 +25,15 @@ import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
   betType: z.string(),
-  against: z.string(),
-  tokens: z
+  users: z.string(),
+  amount: z
     .number()
     .min(10, "Need to bet at least 10 tokens")
     .max(1000, "You can only bet up to 1000 tokens"),
+  cooldown: z.number(),
+  description: z.string(),
+  startDate: z.string(),
+  endDate: z.string(),
 });
 
 function onSubmit(values: any) {
@@ -41,35 +45,79 @@ export function ProfileForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       betType: "",
-      against: "",
-      tokens: 10,
+      users: "",
+      amount: 10,
+      cooldown: 1,
+      description: "",
+      startDate: undefined,
+      endDate: undefined,
     },
   });
 
-  
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
-    const bet = {startDate, endDate, users, amount};
-    const response = await fetch('/bet', {
-      method: "POST",
-      body: JSON.stringify(bet)
-    })
-  }
-  
+    try {
+      const bet = form.getValues();
+      const response = await fetch("http://localhost:8080/bet/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bet),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="cooldown"
+          name="description"
+          render={({ field }: any) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="Enter Title for Bet" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="startDate"
+          render={({ field }: any) => (
+            <FormItem>
+              <FormLabel>Starting Date</FormLabel>
+              <FormControl>
+                <Input type="date" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="endDate"
+          render={({ field }: any) => (
+            <FormItem>
+              <FormLabel>endDate</FormLabel>
+              <FormControl>
+                <Input type="date" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="betType"
           render={({ field }: any) => (
             <FormItem>
               <FormLabel>Type</FormLabel>
               <FormControl>
-                <Select>
+                <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Bet Type" />
                   </SelectTrigger>
@@ -117,7 +165,13 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" onClick={handleSubmit} className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:opacity-90" >Send Bet Request</Button>
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:opacity-90"
+        >
+          Send Bet Request
+        </Button>
       </form>
     </Form>
   );

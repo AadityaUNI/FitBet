@@ -11,7 +11,7 @@ const router = express.Router();
 // Get all bets
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const allbets = await BetModel.find({}).sort({ createdAt: -1 }).populate('users', 'username email');
+    const allbets = await BetModel.find({}).sort({ createdAt: -1 });
     res.status(200).json(allbets);
   } catch (error: any) {
     res.status(400).json({ error: error.message });
@@ -27,7 +27,7 @@ router.get("/:id", async (req: Request, res: Response) => {
   }
 
   try {
-    const bet = await BetModel.findById(id).populate('users', 'username email').populate('winner', 'username email');
+    const bet = await BetModel.findById(id).populate('winner', 'username email');
     
     if (!bet) {
       return res.status(404).json({ error: "Bet not found" });
@@ -110,21 +110,28 @@ router.patch("/:id/complete", async (req: Request, res: Response) => {
 
 // Create a new bet
 router.post("/", validateCreateBet, async (req: Request, res: Response) => {
-  const { startDate, endDate, amount, users, description, coolDown } = req.body;
+  const { startDate, endDate, amount, users, description, cooldown } = req.body;
   
   try {
+    // Convert string dates to Date objects
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+    
+    // For now, create a placeholder user array (you'll need to handle user lookup later)
+    
     const betData = {
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
-      amount,
-      users,
+      startDate: startDateObj,
+      endDate: endDateObj,
+      amount: Number(amount),
+      users: users,
       description,
-      coolDown: coolDown || 0
+      coolDown: cooldown || 0
     };
 
     const bet = await BetController.createBet(betData);
     res.status(201).json(bet);
   } catch (error: any) {
+    console.error("Create bet error:", error.message);
     res.status(400).json({ error: error.message });
   }
 });
@@ -163,7 +170,7 @@ router.patch("/:id", validateUpdateBet, async (req: Request, res: Response) => {
       { _id: id }, 
       { ...req.body }, 
       { new: true, runValidators: true }
-    ).populate('users', 'username email').populate('winner', 'username email');
+    ).populate('winner', 'username email');
     
     if (!bet) {
       return res.status(404).json({ error: "Bet not found" });

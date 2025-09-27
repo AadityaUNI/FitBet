@@ -6,18 +6,17 @@ import { StatCard } from "@/components/HomePage/statCards";
 import { useEffect, useState } from "react";
 import { BetCard } from "@/components/HomePage/betCard"
 
-type Bet = Parameters<typeof BetCard>[0]["bet"]
-
 const Home = () => {
   const [betsData, setBetsData] = useState(null);
 
   useEffect(() => {
     const fetchBets = async () => {
-      const res = await fetch("/bets/");
+      const res = await fetch("http://localhost:8080/bet/");
       const bets = await res.json();
       setBetsData(bets);
     };
     fetchBets();
+    console.log("bets data: ", betsData);
   }, []);
 
   return (
@@ -60,19 +59,19 @@ const Home = () => {
               />
               <StatCard
                 icon={Flame}
-                value={12}
+                value={0}
                 label="Day Streak"
                 variant="orange"
               />
               <StatCard
                 icon={BicepsFlexed}
-                value={45}
+                value={0}
                 label="Total Workouts"
                 variant="indigo"
               />
               <StatCard
                 icon={Clock}
-                value="105m"
+                value="0m"
                 label="This Week"
                 variant="violet"
               />

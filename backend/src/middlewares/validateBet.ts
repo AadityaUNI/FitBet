@@ -2,12 +2,13 @@ import { Request, Response, NextFunction } from 'express';
 import joi from '../utils/joi';
 
 const createBetSchema = {
-  startDate: joi.instance.date().greater('now').required(),
-  endDate: joi.instance.date().greater(joi.instance.ref('startDate')).required(),
+  startDate: joi.instance.string().required(), // Accept date strings from frontend
+  endDate: joi.instance.string().required(),   // Accept date strings from frontend
   amount: joi.instance.number().positive().required(),
-  users: joi.instance.array().items(joi.instance.string().length(24)).min(2).max(2).required(),
+  users: joi.instance.string().optional(),
   description: joi.instance.string().max(500).optional(),
-  coolDown: joi.instance.number().min(0).optional()
+  cooldown: joi.instance.number().min(0).optional(),
+  betType: joi.instance.string().optional() // Allow betType from form
 };
 
 export const validateCreateBet = async (req: Request, res: Response, next: NextFunction) => {

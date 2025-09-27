@@ -16,11 +16,11 @@ const BetSchema = new Schema({
         type: Number,
         required: true
     },
-    users: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Account',
-        required: true
-    }],
+    users: {
+        type: String,
+        required: false,
+        trim: true
+    },
     status: {
         type: String,
         enum: ['active', 'completed', 'cancelled'],

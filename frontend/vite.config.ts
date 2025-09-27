@@ -6,9 +6,10 @@ import tailwindcss from "@tailwindcss/vite"
 // https://vite.dev/config/
 export default defineConfig({
   server: {
+    
     watch: {
-      usePolling: true,   // 👈 enable polling
-      interval: 100       // 👈 optional: adjust the polling interval (ms)
+      usePolling: true,  
+      interval: 100       
     }
   },
   plugins: [react(), tailwindcss()],
