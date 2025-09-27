@@ -10,7 +10,7 @@ import AddIcon from '@mui/icons-material/Add'
 import HomeIcon from '@mui/icons-material/Home'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { ProfilePopover } from '@/pages/ProfilePopover';
+import { ProfilePopover } from '@/components/ProfilePopover';
 
 export default function SimpleBottomNavigation() {
   const [value, setValue] = React.useState(0);

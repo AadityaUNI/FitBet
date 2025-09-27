@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +19,17 @@ import ProfileIcon from "@mui/icons-material/Person";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function ProfilePopover() {
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    try {
+      localStorage.removeItem("auth_token"); // replace with your token key
+      navigate("/"); // navigate to landing page
+    } catch (err) {
+      console.error("Logout error:", err);
+      navigate("/"); // fallback redirect
+    }
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -70,7 +82,7 @@ export function ProfilePopover() {
         <DropdownMenuItem>Support</DropdownMenuItem>
         <DropdownMenuItem disabled>API</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick = {handleLogout}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
