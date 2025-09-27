@@ -2,6 +2,8 @@ import SimpleBottomNavigation from "../components/BottomNav/BottomNav";
 import { ProfileForm } from "../components/Bets/CreateBet";
 import { ProfilePopover } from "./ProfilePopover";
 const BettingForm = () => {
+
+
   return (
     <>
       <div className="min-h-screen w-full bg-gradient-to-br from-white via-indigo-50/30 to-purple-50/40 relative">

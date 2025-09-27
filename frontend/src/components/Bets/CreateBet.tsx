@@ -46,13 +46,25 @@ export function ProfileForm() {
     },
   });
 
+  
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    const bet = {startDate, endDate, users, amount};
+    const response = await fetch('/bet', {
+      method: "POST",
+      body: JSON.stringify(bet)
+    })
+  }
+  
+
   return (
     
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="betType"
+          name="cooldown"
           render={({ field }: any) => (
             <FormItem>
               <FormLabel>Type</FormLabel>
@@ -62,8 +74,8 @@ export function ProfileForm() {
                     <SelectValue placeholder="Bet Type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="one-time">One-Time</SelectItem>
-                    <SelectItem value="daily">Daily</SelectItem>
+                    <SelectItem value="1">One-Time</SelectItem>
+                    <SelectItem value="7">Daily</SelectItem>
                   </SelectContent>
                 </Select>
                 {/* <Input placeholder="" {...field} /> */}
@@ -78,20 +90,13 @@ export function ProfileForm() {
         />
         <FormField
           control={form.control}
-          name="against"
+          name="users"
           render={({ field }: any) => (
             <FormItem>
               <FormLabel>Against</FormLabel>
-              <Select>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Against" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="yourself">Yourself</SelectItem>
-                  {/* should get list of friends and an option for all of them */}
-                  <SelectItem value="friend">Friend</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <Input placeholder="(leave empty for solo bet)" {...field} />
+              </FormControl>
               <FormMessage />
               <FormDescription>Challenge others or yourself!</FormDescription>
             </FormItem>
@@ -99,7 +104,7 @@ export function ProfileForm() {
         />
         <FormField
           control={form.control}
-          name="tokens"
+          name="amount"
           render={({ field }: any) => (
             <FormItem>
               <FormLabel>Amount of Tokens to Bet</FormLabel>
@@ -112,7 +117,7 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:opacity-90" >Send Bet Request</Button>
+        <Button type="submit" onClick={handleSubmit} className="w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white hover:opacity-90" >Send Bet Request</Button>
       </form>
     </Form>
   );

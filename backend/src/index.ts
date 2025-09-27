@@ -10,8 +10,9 @@ import googleAuthRoutes from './routes/google'; // <--- our new module
 import { withGoogleAuth } from './middlewares/google';
 import oAuth2Client from './controllers/googleAuth/googleClient';
 import { google } from 'googleapis';
-
+import { Express } from 'express';
 import Account from './models/Account';
+import { expression } from 'joi';
 
 const bootstrap = async () => {
   try {
@@ -21,12 +22,14 @@ const bootstrap = async () => {
     console.error('❌ MongoDB failed', err);
     return;
   }
-
+  const express = require('express');
+  const betRoutes = require('./routes/bets');
+  app.use(express.json());
   app.get('/healthz', (req, res) => res.status(204).end());
 
   app.use('/auth', authRoutes);
-  app.use('/oauth', googleAuthRoutes); // <--- mount OAuth routes
-
+  app.use('/oauth', googleAuthRoutes); 
+  app.use('/bet', betRoutes);
   app.get('/get-token', async (req, res, next) => {
 	try {
 		const { code } = req.query;
